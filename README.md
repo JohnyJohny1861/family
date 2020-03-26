@@ -6,5 +6,4 @@
 /server -------------
   npm install
   npm run dev
-
-# You need mongodb installed ;)
+You need mongodb installed ;)
