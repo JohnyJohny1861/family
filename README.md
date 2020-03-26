@@ -1,4 +1,4 @@
-# family
+# family - vuetify feahtersjs example
 /cleint -------------
 
   @npm install
