@@ -6,11 +6,8 @@ module.exports = function (app) {
   const modelName = 'users'
   const mongooseClient = app.get('mongooseClient')
   const schema = new mongooseClient.Schema({
-
-    username: { type: String, unique: true, lowercase: true },
-    displayName: { type: String, required: true },
-    imageUrl: { type: String, required: true },
-    password: { type: String, required: true }
+    username: { type: String, unique: true },
+    password: { type: String }
 
   }, {
     timestamps: true

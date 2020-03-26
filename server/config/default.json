@@ -3,13 +3,13 @@
   "port": 3030,
   "public": "../public/",
   "paginate": {
-    "default": 500,
-    "max": 1000
+    "default": 100,
+    "max": 500
   },
   "authentication": {
     "entity": "user",
     "service": "users",
-    "secret": "js94h13YNb4L3To8SWYbA6PSqyg=",
+    "secret": "a3g48YKTMOnIZnU3dfynV9ARig0=",
     "authStrategies": [
       "jwt",
       "local"
@@ -19,7 +19,7 @@
         "typ": "access"
       },
       "audience": "https://yourdomain.com",
-      "issuer": "Isroiljon",
+      "issuer": "feathers",
       "algorithm": "HS256",
       "expiresIn": "1d"
     },
@@ -28,5 +28,5 @@
       "passwordField": "password"
     }
   },
-  "mongodb": "mongodb://localhost:27017/trello"
+  "mongodb": "mongodb://localhost:27017/feathers"
 }
