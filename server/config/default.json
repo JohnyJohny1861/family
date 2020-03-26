@@ -3,13 +3,13 @@
   "port": 3030,
   "public": "../public/",
   "paginate": {
-    "default": 10,
-    "max": 50
+    "default": 500,
+    "max": 1000
   },
   "authentication": {
     "entity": "user",
     "service": "users",
-    "secret": "5oDWb2yxYnq/CLmBdXZlyznXWiQ=",
+    "secret": "js94h13YNb4L3To8SWYbA6PSqyg=",
     "authStrategies": [
       "jwt",
       "local"
@@ -19,14 +19,14 @@
         "typ": "access"
       },
       "audience": "https://yourdomain.com",
-      "issuer": "feathers",
+      "issuer": "Isroiljon",
       "algorithm": "HS256",
       "expiresIn": "1d"
     },
     "local": {
-      "usernameField": "email",
+      "usernameField": "\\username",
       "passwordField": "password"
     }
   },
-  "mongodb": "mongodb://localhost:27017/fam_expense"
+  "mongodb": "mongodb://localhost:27017/trello"
 }

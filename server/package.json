@@ -1,6 +1,6 @@
 {
-  "name": "fam-expense",
-  "description": "",
+  "name": "feathers",
+  "description": "asd",
   "version": "0.0.0",
   "homepage": "",
   "private": true,
@@ -53,11 +53,12 @@
     "mongodb-core": "^3.2.7",
     "mongoose": "^5.9.5",
     "serve-favicon": "^2.5.0",
+    "vue": "^2.6.11",
     "winston": "^3.2.1"
   },
   "devDependencies": {
     "axios": "^0.19.2",
-    "mocha": "^7.1.0",
+    "mocha": "^7.1.1",
     "nodemon": "^2.0.2",
     "standard": "^14.3.3"
   }
