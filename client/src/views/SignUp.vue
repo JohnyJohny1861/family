@@ -55,7 +55,7 @@
 </template>
 
 <script>
-   import axios from 'axios';
+   import { mapActions, mapState } from 'vuex'
    import { mdiAccount, mdiAccountArrowLeft, mdiLock, mdiImage } from '@mdi/js';
    export default {
       name: 'signup',
@@ -71,24 +71,36 @@
             password: '',
             confirmPassword: ''
          },
-         loading: false,
          valid: false,
          notEmptyRules: [ v => !!v || 'Can not be empty'],
          confirmPasswordRules: [v => v === vm.user.password || 'Password must match']
       }),
+      computed: {
+         ...mapState('users', { loading: 'isCreatePending' }),
+      },
       methods: {
+         ...mapActions('users', [ 'create' ]),
+         ...mapActions('auth', [ 'authenticate' ]),
          async signup() {
             try {
-               this.loading = true;
-               const res = await axios.post('http://localhost:3030/users', this.user);
-               this.$store.commit('setUser', res.data.user);
+               await this.create({
+                  ...this.user,
+                  strategy: 'local'
+               });
                this.$router.push('/login');
             } catch (err) { 
                console.log(err) 
             }
-            finally {
-               this.loading = false
+         }
+      },
+      async mounted() {
+         try {
+            const res = await this.authenticate()
+            if(res.user) {
+               this.$router.push('/');
             }
+         } catch (err) {
+            console.log(err);
          }
       }
    }

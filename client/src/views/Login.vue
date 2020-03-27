@@ -25,16 +25,16 @@
 
                         <div v-else class="d-flex justify-center">
                            <v-progress-circular  
-                                :size="50" 
-                                color="primary" 
-                                indeterminate />
+                              :size="50" 
+                              color="primary" 
+                              indeterminate />
                         </div>
 
                      </v-card-text>
                      <v-card-actions>
                         <v-spacer />
                         <v-btn 
-                           @click="login"
+                           @click="loginUser"
                            class="mb-4 mr-4"
                            type="button" 
                            color="primary" 
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-   import axios from 'axios';
+   import { mapActions, mapState } from 'vuex'
    import { mdiAccount, mdiLock } from '@mdi/js';
    export default {
       name: 'login',
@@ -60,31 +60,33 @@
          user: {
             username: '',
             password: '',
+            strategy: 'local'
          },
-         loading: false,
          valid: false,
          notEmptyRules: [ v => !!v || 'Can not be empty'],
          confirmPasswordRules: [v => v === vm.user.password || 'Password must match']
       }),
       methods: {
-         async login() {
+         ...mapActions('auth', [ 'authenticate' ]),
+         ...mapActions('auth', [ 'login' ]),
+         async loginUser() {
             try {
-                this.loading = true;
-                const res = await axios.post('http://localhost:3030/authentication', {
-                    ...this.user,
-                    strategy: 'local'
-                });
-                console.log(res.data)
-                this.$store.commit('setUser', res.data.user)
-                this.$router.push('/');
-                window.localStorage.setItem('token', res.data.accessToken);
-                window.localStorage.setItem('user', JSON.stringify(res.data.user));
-            } catch (err) { 
-                console.log(err) 
+               await this.login(this.user);
+               this.$router.push('/')
+            } catch (err) { console.log(err) }
+         }
+      },
+      computed: {
+         ...mapState('auth', { loading: 'isAuthenticatePending' }),
+      },
+      async mounted() {
+         try {
+            const res = await this.authenticate()
+            if(res.user) {
+               this.$router.push('/');
             }
-            finally {
-                this.loading = false
-            }
+         } catch (err) {
+            console.log(err);
          }
       }
    }

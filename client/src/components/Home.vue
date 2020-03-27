@@ -1,6 +1,6 @@
 <template>
   <v-card max-width="600" class="mx-auto mt-10">
-    <v-list three-line>
+    <v-list three-line style="max-height: 400px; overflow-y: scroll;">
       <v-subheader> Expenses </v-subheader>
       <template v-for="(exp) in expenses">
 
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  import axios from 'axios';
+  import { mapActions } from 'vuex'
   export default {
     data: () => ({
       expenses: [],
@@ -54,45 +54,29 @@
       }
     }),
     methods: {
+      ...mapActions('expense', [ 'create' ]),
+      ...mapActions('expense', [ 'find' ]),
       async addExpense() {
         try{
-          const res = await axios('http://localhost:3030/expense', {
-            method: 'POST',
-            headers: {
-              Authorization: window.localStorage.getItem('token')
-            },
-            data: {
-              ...this.newExp,
-              user: this.$store.state.userModule.user.username
-            }
+          await this.create({
+            ...this.newExp,
+            user: this.$store.state.auth.user.username
           });
+          this.getExpenses();
           this.newExp.amount = '';
           this.newExp.text = '';
           this.valid = true;
-          this.expenses.push(res.data);
         } catch(err) {
           console.log(err)
         }
-        
       },
       async getExpenses() {
-        try {
-          const res = await axios.get('http://localhost:3030/expense', {
-            headers: {
-              Authorization: window.localStorage.getItem('token')
-            }
-          })
-          this.expenses = res.data.data;
-        } catch(err) {
-          console.log(err)
-        }
+        const res = await this.find()
+        this.expenses = res.data
       }
     },
-    mounted() {
-      if(!this.$store.state.userModule.user) {
-        return this.$router.push('/login');
-      }
-      this.getExpenses();
+    async mounted() {
+      this.getExpenses()
     }
   }
 </script>

@@ -7,7 +7,7 @@
 
       <v-spacer></v-spacer>
 
-      <div v-if="$store.state.userModule.user">
+      <div v-if="$store.state.auth.user">
         <v-btn @click="logout" text small>logout</v-btn>
       </div>
 
@@ -42,19 +42,20 @@ export default {
     //
   }),
   methods: {
-    logout() {
-      this.$store.commit('setUser', null);
-      window.localStorage.removeItem('token');
-      window.localStorage.removeItem('user');
-      this.$router.push('/login')
+    async logout() {
+      try{
+        await this.$store.dispatch('auth/logout');
+        this.$router.push('/login');
+      } catch(err) {
+        console.log(err);
+      }
     }
   },
-  created() {
-    const token = localStorage.getItem('token');
-    if(token) {
-      console.log(token);
-      const user = JSON.parse(localStorage.getItem('user'));
-      this.$store.commit('setUser', user);
+  async created() {
+    try {
+      await this.$store.dispatch('auth/authenticate')
+    } catch(err) {
+      this.$router.push("/login");
     }
   }
 };
